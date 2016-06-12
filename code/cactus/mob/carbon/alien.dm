@@ -1,3 +1,10 @@
+/mob/living/carbon/alien/proc/deathNotice()
+	src.deathNotified = 1
+	if (src.z != 2) //so admins can fuck around in the thunderdome
+		var/mob/living/carbon/alien/A
+		for(A in world)
+			A << "<span class='userdanger'>[src.name] has died at [src.loc.loc.name]! </span>"
+
 /obj/machinery/door/airlock/attack_alien(mob/user) //PRYING OPEN AIRLOCKS AS AN ALIEN
 	user.changeNext_move(CLICK_CD_MELEE)
 	if(isalienadult(user))
@@ -83,7 +90,7 @@
 		return
 	else
 		return
-
+/*
 /obj/structure/closet/attack_alien(mob/user)
 	if(isalienadult(user))
 		playsound(src, pick('sound/alien/Effects/bang1.ogg', 'sound/alien/Effects/bang2.ogg', 'sound/alien/Effects/bang3.ogg', 'sound/alien/Effects/bang4.ogg', 'sound/alien/Effects/bang5.ogg', 'sound/alien/Effects/bang6.ogg', 'sound/alien/Effects/bang7.ogg', 'sound/alien/Effects/bang8.ogg'), 100, 0, 0)
@@ -98,7 +105,7 @@
 
 	else
 		return
-
+*/
 /obj/structure/barricade/wooden/attack_alien(mob/user)
 	if(isalienadult(user))
 		playsound(src, 'sound/weapons/bladeslice.ogg', 100, 0, 0)
@@ -224,7 +231,7 @@
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS|HANDS
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	allowed = list(/obj/item/clothing/mask/facehugger)
-	armor = list(melee = 35, bullet = 10, laser = -50, energy = 0, bomb = 10, bio = 10, rad = 30)
+	armor = list(melee = 35, bullet = 10, laser = -25, energy = 0, bomb = 10, bio = 10, rad = 30)
 //HELMET
 /obj/item/clothing/head/xeno_helm
 	name = "alien helmet"
@@ -233,7 +240,7 @@
 	item_state = "alien_helm"
 	desc = "An armored helmet made out of chitinous alien hide."
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE
-	armor = list(melee = 35, bullet = 10, laser = -50, energy = 0, bomb = 10, bio = 10, rad = 30)
+	armor = list(melee = 35, bullet = 10, laser = -25, energy = 0, bomb = 10, bio = 10, rad = 30)
 //CRAFTING RECIPES//
 /datum/table_recipe/xenoshield
 	name = "alien shield"

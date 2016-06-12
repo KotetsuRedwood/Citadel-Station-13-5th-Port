@@ -360,6 +360,8 @@ About the new airlock wires panel:
 			update_icon(AIRLOCK_CLOSING)
 		if("deny")
 			update_icon(AIRLOCK_DENY)
+			if(hasPower())
+				playsound(src.loc, 'sound/machines/airlockdeny.ogg', 30, 0)
 			sleep(6)
 			update_icon(AIRLOCK_CLOSED)
 			icon_state = "closed"
@@ -981,7 +983,7 @@ About the new airlock wires panel:
 		if(istype(src, /obj/machinery/door/airlock/clown))
 			playsound(src.loc, 'sound/items/bikehorn.ogg', 30, 1)
 		else
-			playsound(src.loc, 'sound/machines/airlock.ogg', 30, 1)
+			playsound(src.loc, 'sound/machines/airlockopen.ogg', 30, 0)
 		if(src.closeOther != null && istype(src.closeOther, /obj/machinery/door/airlock/) && !src.closeOther.density)
 			src.closeOther.close()
 	else
@@ -1036,7 +1038,7 @@ About the new airlock wires panel:
 		if(istype(src, /obj/machinery/door/airlock/clown))
 			playsound(src.loc, 'sound/items/bikehorn.ogg', 30, 1)
 		else
-			playsound(src.loc, 'sound/machines/airlock.ogg', 30, 1)
+			playsound(src.loc, 'sound/machines/airlockclose.ogg', 30, 0)
 	else
 		playsound(src.loc, 'sound/machines/airlockforced.ogg', 30, 1)
 
@@ -1172,34 +1174,3 @@ About the new airlock wires panel:
 		locked = 1
 		loseMainPower()
 		loseBackupPower()
-
-
-/obj/machinery/door/airlock/attack_alien(mob/user) //PRYING OPEN AIRLOCKS AS AN ALIEN
-	user.changeNext_move(CLICK_CD_MELEE)
-	if(isalienadult(user))
-
-		if(secondsElectrified != 0 && src.shock(user, 100))
-			return
-		if(locked && welded)
-			user << text("<span class='notice'>The airlock is bolted and welded, no way you're getting through that!</span>")
-			return
-		else if(locked)
-			user << text("<span class='notice'>The airlock is bolted, it won't budge!</span>")
-			return
-		else if(welded)
-			user << text("<span class='notice'>The airlock is welded, you can't get a good grip!</span>")
-			return
-		else if(!locked && !welded && density)
-			visible_message(
-				"<span class='notice'>[user] begins prying open [src].</span>",\
-				"<span class='notice'>You begin prying open [src].</span>",\
-				"<span class='italics'>You hear prying...</span>")
-			playsound(src, 'sound/machines/airlockforced_alien.ogg', 100, 1)
-			sleep(40)
-			if(!locked && !welded && density && in_range(src, user) && user.stat < 1)
-				open(2)
-		return
-
-	else
-
-		return
